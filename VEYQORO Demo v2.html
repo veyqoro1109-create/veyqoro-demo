@@ -1,0 +1,352 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>VEYQORO Demo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap">
+<style>
+/* Layout concept: one calm column, five screens in a fixed order, a step bar on top, a prototype banner that never leaves. */
+:root {
+  --bg: #f4f7f7;
+  --surface: #ffffff;
+  --fg: #14202b;
+  --muted: #4a5a66;
+  --accent: #0b5d63;
+  --accent-fg: #ffffff;
+  --accent-soft: #e1f0f1;
+  --line: #d3dee1;
+  --ok: #1c6b45;
+  --ok-soft: #e1f3e8;
+  --note-soft: #fff4d6;
+  --note-fg: #5a4300;
+  --font-body: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1a1f; --surface: #15252b; --fg: #e8eef0; --muted: #a2b4bc;
+    --accent: #5cc2c9; --accent-fg: #06262a; --accent-soft: #17353a; --line: #2a3f46;
+    --ok: #7bd9a3; --ok-soft: #153126; --note-soft: #3a3010; --note-fg: #f3dea0;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1a1f; --surface: #15252b; --fg: #e8eef0; --muted: #a2b4bc;
+  --accent: #5cc2c9; --accent-fg: #06262a; --accent-soft: #17353a; --line: #2a3f46;
+  --ok: #7bd9a3; --ok-soft: #153126; --note-soft: #3a3010; --note-fg: #f3dea0;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--font-body);
+  font-size: 16px; line-height: 1.5; margin: 0;
+  padding-block: 0 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 760px; margin: 0 auto; }
+.banner {
+  background: var(--note-soft); color: var(--note-fg); font-size: 13px; font-weight: 600;
+  padding: 8px 16px; margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+  text-align: center;
+}
+.top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 0 12px; }
+.brand { font-weight: 800; font-size: 20px; letter-spacing: 0.02em; }
+.brand span { color: var(--accent); font-weight: 400; }
+.lang { display: inline-flex; border: 1.5px solid var(--line); border-radius: 99px; overflow: hidden; }
+.lang button { border: 0; background: transparent; color: var(--fg); font: inherit; font-size: 13px; font-weight: 600; padding: 6px 14px; cursor: pointer; }
+.lang button[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); }
+.steps { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 0 20px; margin: 0; list-style: none; }
+.steps button {
+  border: 1.5px solid var(--line); background: var(--surface); color: var(--muted); font: inherit; font-size: 13px; font-weight: 600;
+  border-radius: 99px; padding: 6px 12px; cursor: pointer; min-height: 36px;
+}
+.steps button[aria-current="step"] { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.card { background: var(--surface); border: 1.5px solid var(--line); border-radius: 10px; padding: 24px; min-width: 0; }
+h1 { font-size: clamp(26px, 5vw, 36px); line-height: 1.15; margin: 0 0 12px; font-weight: 800; letter-spacing: -0.01em; text-wrap: balance; }
+h2 { font-size: 22px; line-height: 1.2; margin: 0 0 6px; font-weight: 800; text-wrap: balance; }
+p { margin: 0 0 16px; max-width: 62ch; }
+.muted { color: var(--muted); }
+.row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+.btn {
+  font: inherit; font-weight: 600; font-size: 15px; border-radius: 8px; padding: 12px 20px; cursor: pointer; min-height: 44px;
+  border: 1.5px solid var(--accent); background: var(--accent); color: var(--accent-fg);
+}
+.btn.ghost { background: transparent; color: var(--accent); }
+.btn[disabled] { opacity: 0.5; cursor: default; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.items { display: flex; flex-direction: column; gap: 12px; margin: 20px 0 0; padding: 0; list-style: none; }
+.item { border: 1.5px solid var(--line); border-radius: 8px; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; min-width: 0; }
+.item .body { flex: 1; min-width: 0; }
+.item h3 { margin: 0 0 2px; font-size: 16px; font-weight: 800; }
+.item .detail { margin: 0 0 6px; font-size: 14px; color: var(--muted); max-width: none; }
+.tag { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--ok); background: var(--ok-soft); border-radius: 99px; padding: 3px 10px; }
+.tag svg { width: 12px; height: 12px; }
+.tag.pending { color: var(--muted); background: var(--accent-soft); }
+.item label { display: flex; gap: 12px; align-items: flex-start; width: 100%; cursor: pointer; }
+.item input[type="checkbox"] { width: 22px; height: 22px; margin-top: 2px; accent-color: var(--accent); flex-shrink: 0; }
+.who { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; margin-bottom: 4px; }
+.who .name { font-weight: 800; font-size: 18px; }
+.callout { background: var(--accent-soft); border-radius: 8px; padding: 12px 16px; font-weight: 600; font-size: 15px; margin-top: 20px; }
+.status { margin-top: 12px; font-size: 14px; font-weight: 600; color: var(--ok); min-height: 22px; }
+.foot { margin-top: 20px; font-size: 13px; color: var(--muted); text-align: center; }
+
+/* Sample documents: always drawn as light paper, in both themes, with a watermark that cannot be missed. */
+.doc { position: relative; overflow: hidden; background: #fbfaf5; color: #1d2328; border: 1px solid #c9c6bb; border-radius: 6px;
+  padding: 14px 16px; font-size: 12px; line-height: 1.45; font-family: Georgia, 'Times New Roman', serif; min-width: 0; }
+.doc::after { content: 'SAMPLE · MUSTER'; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-18deg);
+  font: 800 clamp(15px, 5vw, 34px)/1 'Manrope', system-ui, sans-serif; letter-spacing: 0.04em; color: rgba(190, 40, 40, 0.22);
+  border: 3px solid rgba(190, 40, 40, 0.22); padding: 4px 14px; white-space: nowrap; pointer-events: none; }
+.doc h4 { margin: 0 0 8px; font: 700 13px/1.2 'Manrope', system-ui, sans-serif; letter-spacing: 0.04em; text-transform: uppercase; color: #27414a; }
+.doc .sub { color: #5b6770; font-size: 11px; margin: 0 0 8px; max-width: none; }
+.doc dl { display: grid; grid-template-columns: max-content 1fr; gap: 2px 12px; margin: 0; }
+.doc dt { color: #5b6770; font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; align-self: center; }
+.doc dd { margin: 0; font-weight: 700; overflow-wrap: anywhere; }
+.doc .photo { float: left; width: 64px; height: 80px; margin: 0 12px 6px 0; background: #dfe3e4; border: 1px solid #c3c9cb; border-radius: 3px;
+  display: flex; align-items: center; justify-content: center; color: #8a969b; font: 600 9px/1.2 'Manrope', system-ui, sans-serif; text-align: center; }
+.doc .mrz { clear: both; margin: 8px 0 0; padding-top: 6px; font: 600 clamp(6.5px, 2.15vw, 11px)/1.35 'Courier New', monospace; letter-spacing: 0; overflow: hidden; white-space: nowrap; }
+.doc table { border-collapse: collapse; width: 100%; }
+.doc td { padding: 2px 0; vertical-align: top; }
+.doc td:last-child { text-align: right; font-weight: 700; }
+.doc .rule { border-top: 1px solid #c9c6bb; margin: 8px 0; }
+.dcard { border: 1.5px solid var(--line); border-radius: 10px; padding: 14px; margin-top: 16px; min-width: 0; }
+.dcard .cap { margin: 8px 0 10px; font-size: 13px; color: var(--muted); max-width: none; }
+.dres { margin-top: 12px; border-radius: 8px; background: var(--ok-soft); padding: 12px 14px; }
+.dres ul { margin: 6px 0 8px; padding-left: 18px; font-size: 14px; }
+.dres .tok { font: 600 13px/1.3 'Courier New', monospace; overflow-wrap: anywhere; }
+.dres .small { font-size: 12px; color: var(--muted); margin: 6px 0 0; max-width: none; }
+.grp { margin: 24px 0 0; font-size: 13px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); }
+</style>
+
+<div class="banner" id="banner"></div>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">VEYQORO <span>Demo</span></div>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" id="lang-en" aria-pressed="true">EN</button>
+      <button type="button" id="lang-de" aria-pressed="false">DE</button>
+    </div>
+  </header>
+  <ol class="steps" id="steps"></ol>
+  <main class="card" id="screen" aria-live="polite"></main>
+  <p class="foot" id="foot"></p>
+</div>
+
+<script>
+var T = {
+  en: {
+    banner: 'Prototype with example data. No real people, documents or numbers.',
+    foot: 'Example only. Evidence, not a guarantee.',
+    steps: ['Start', 'Documents', 'Tenant profile', 'Share', 'Landlord view', 'Flat check'],
+    dTitle: 'Your documents', dText: 'These are made-up sample documents, so you can see what is checked and what comes back. Press "Check this sample" on each one. Use no real documents in this demo.',
+    dTenant: 'Tenant documents', dLandlord: 'Landlord document', dCheck: 'Check this sample', dChecking: 'Checking…',
+    dDone: 'Result', dTokenLabel: 'Result code', dDeleted: 'The sample is not kept. Only this result is kept (example).', dContinue: 'Continue to the profile',
+    dc1: 'Passport page (fictional country, as the tenant would upload it)', dc2: 'Enrollment letter from a fictional university', dc3: 'Blocked account statement from a fictional bank', dc4: 'Land registry extract (Grundbuchauszug) for the landlord, as a sample',
+    r1: ['Name and passport number read from the photo', 'Machine-readable lines are consistent (check digits match)', 'Valid until 2031, so long enough for the rental'],
+    r2: ['Enrolled for winter semester 2026/27', 'Name matches the verified passport', 'Letter is recent enough'],
+    r3: ['Balance meets the required amount (example)', 'Name matches the verified passport', 'Statement is recent enough'],
+    r4: ['Owner name matches the landlord\'s verified identity', 'Extract is recent enough'],
+    dNote: 'A check reads the document and applies set rules. It is evidence, not a guarantee. Unclear cases go to a person.',
+    wTitle: 'Show who you are. Rent with confidence.',
+    wText: 'VEYQORO gives international tenants verified information that travels with them, and gives landlords a clearer basis for their decision.',
+    wTenant: 'I am a tenant', wLandlord: 'I am a landlord',
+    wNote: 'Evidence, not a guarantee.',
+    pTitle: 'Your profile', pName: 'Alex Example', pSub: 'International student, arriving in Münster in April',
+    verified: 'Verified', notAdded: 'Not added yet',
+    idT: 'Identity', idD: 'Passport checked and matched to the holder.', idV: 'Verified by [example provider]',
+    moT: 'Proof of money', moD: 'Blocked account with enough funds for 12 months (example).', moV: 'Verified by [example provider]',
+    flT: 'Earlier flats', flDNo: 'Not added yet. A reference from a previous landlord can be added.', flDYes: 'Reference from a previous landlord.', flV: 'Confirmed by [example landlord]',
+    addRef: 'Add reference (example)', pShare: 'Share with a landlord',
+    sTitle: 'Choose what to share', sText: 'You decide what the landlord sees, and you can withdraw it at any time.',
+    sTo: 'Landlord: Example Housing', share: 'Share', back: 'Back',
+    lTitle: 'Profile from Alex Example', lSub: 'Shared by the tenant. Verification is evidence, not a guarantee.',
+    lNone: 'Nothing is shared yet.', lCallout: 'You decide. VEYQORO shows no score and no recommendation.',
+    more: 'Ask for more information', moreDone: 'Request sent to the tenant (example).', toCheck: 'Check the flat and landlord',
+    fTitle: 'Flat and landlord check', fSub: 'What a tenant can see before signing.',
+    f1T: 'The flat exists', f1D: 'Example Street 1, Münster. Found in an example property record.',
+    f2T: 'The landlord is who they say', f2D: 'Identity checked by [example provider].',
+    f3T: 'The landlord may rent it out', f3D: 'Ownership or authority confirmed by [example source].',
+    f4T: 'Registration', f4D: 'The landlord confirmation for the registration is provided at move-in (example).',
+    toStart: 'Back to start'
+  },
+  de: {
+    banner: 'Prototyp mit Beispieldaten. Keine echten Personen, Dokumente oder Zahlen.',
+    foot: 'Nur ein Beispiel. Nachweise, keine Garantie.',
+    steps: ['Start', 'Dokumente', 'Mieterprofil', 'Teilen', 'Ansicht Vermieter', 'Wohnungs-Check'],
+    dTitle: 'Deine Dokumente', dText: 'Das sind ausgedachte Beispieldokumente, damit du siehst, was geprüft wird und was zurückkommt. Tippe bei jedem auf "Dieses Beispiel prüfen". Nutze in dieser Demo keine echten Dokumente.',
+    dTenant: 'Dokumente der Mieter', dLandlord: 'Dokument des Vermieters', dCheck: 'Dieses Beispiel prüfen', dChecking: 'Prüfung läuft…',
+    dDone: 'Ergebnis', dTokenLabel: 'Ergebniscode', dDeleted: 'Das Beispiel wird nicht aufbewahrt. Nur dieses Ergebnis bleibt (Beispiel).', dContinue: 'Weiter zum Profil',
+    dc1: 'Reisepassseite (erfundenes Land, so wie ein Mieter sie hochlädt)', dc2: 'Immatrikulationsbescheinigung einer erfundenen Universität', dc3: 'Sperrkonto-Auszug einer erfundenen Bank', dc4: 'Grundbuchauszug für den Vermieter, als Beispiel',
+    r1: ['Name und Passnummer vom Foto gelesen', 'Maschinenlesbare Zeilen stimmen überein (Prüfziffern passen)', 'Gültig bis 2031, also lang genug für die Miete'],
+    r2: ['Im Wintersemester 2026/27 eingeschrieben', 'Name passt zum geprüften Reisepass', 'Bescheinigung ist aktuell genug'],
+    r3: ['Guthaben erreicht den verlangten Betrag (Beispiel)', 'Name passt zum geprüften Reisepass', 'Auszug ist aktuell genug'],
+    r4: ['Eigentümername passt zur geprüften Identität des Vermieters', 'Auszug ist aktuell genug'],
+    dNote: 'Eine Prüfung liest das Dokument und wendet feste Regeln an. Sie ist ein Nachweis, keine Garantie. Unklare Fälle prüft eine Person.',
+    wTitle: 'Zeige, wer du bist. Mit Vertrauen mieten.',
+    wText: 'VEYQORO gibt internationalen Mietern geprüfte Angaben, die mit ihnen reisen, und gibt Vermietern eine klarere Grundlage für ihre Entscheidung.',
+    wTenant: 'Ich bin Mieter:in', wLandlord: 'Ich bin Vermieter:in',
+    wNote: 'Nachweise, keine Garantie.',
+    pTitle: 'Dein Profil', pName: 'Alex Example', pSub: 'Internationale:r Studierende:r, Ankunft in Münster im April',
+    verified: 'Geprüft', notAdded: 'Noch nicht hinzugefügt',
+    idT: 'Identität', idD: 'Reisepass geprüft und dem Inhaber zugeordnet.', idV: 'Geprüft von [Beispielanbieter]',
+    moT: 'Finanzierungsnachweis', moD: 'Sperrkonto mit ausreichend Guthaben für 12 Monate (Beispiel).', moV: 'Geprüft von [Beispielanbieter]',
+    flT: 'Frühere Wohnungen', flDNo: 'Noch nicht hinzugefügt. Eine Referenz früherer Vermieter kann ergänzt werden.', flDYes: 'Referenz eines früheren Vermieters.', flV: 'Bestätigt von [Beispiel-Vermieter]',
+    addRef: 'Referenz hinzufügen (Beispiel)', pShare: 'Mit Vermieter teilen',
+    sTitle: 'Wähle, was du teilst', sText: 'Du entscheidest, was der Vermieter sieht, und kannst die Freigabe jederzeit zurücknehmen.',
+    sTo: 'Vermieter: Beispiel Wohnen', share: 'Teilen', back: 'Zurück',
+    lTitle: 'Profil von Alex Example', lSub: 'Vom Mieter geteilt. Eine Prüfung ist ein Nachweis, keine Garantie.',
+    lNone: 'Noch nichts geteilt.', lCallout: 'Du entscheidest. VEYQORO zeigt keine Bewertung und keine Empfehlung.',
+    more: 'Mehr Informationen anfragen', moreDone: 'Anfrage an den Mieter gesendet (Beispiel).', toCheck: 'Wohnung und Vermieter prüfen',
+    fTitle: 'Wohnungs- und Vermieter-Check', fSub: 'Was ein Mieter vor der Unterschrift sehen kann.',
+    f1T: 'Die Wohnung existiert', f1D: 'Beispielstraße 1, Münster. In einem Beispiel-Objektregister gefunden.',
+    f2T: 'Der Vermieter ist, wer er sagt', f2D: 'Identität geprüft von [Beispielanbieter].',
+    f3T: 'Der Vermieter darf vermieten', f3D: 'Eigentum oder Vollmacht bestätigt von [Beispielquelle].',
+    f4T: 'Anmeldung', f4D: 'Die Wohnungsgeberbestätigung für die Anmeldung wird beim Einzug bereitgestellt (Beispiel).',
+    toStart: 'Zurück zum Start'
+  }
+};
+var CHECK = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l3 3 5-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var state = { lang: 'en', screen: 0, flatsAdded: false, share: { id: true, mo: true, fl: true }, asked: false, checked: {}, busy: {} };
+
+function t() { return T[state.lang]; }
+function tag(text) { return '<span class="tag">' + CHECK + text + '</span>'; }
+function item(title, detail, tagHtml) {
+  return '<li class="item"><div class="body"><h3>' + title + '</h3><p class="detail">' + detail + '</p>' + tagHtml + '</div></li>';
+}
+function sharedKeys() {
+  var k = [];
+  if (state.share.id) k.push('id');
+  if (state.share.mo) k.push('mo');
+  if (state.share.fl && state.flatsAdded) k.push('fl');
+  return k;
+}
+function itemFor(key) {
+  var s = t();
+  if (key === 'id') return item(s.idT, s.idD, tag(s.idV));
+  if (key === 'mo') return item(s.moT, s.moD, tag(s.moV));
+  return item(s.flT, s.flDYes, tag(s.flV));
+}
+
+
+var DOCS = {
+  d1: function () {
+    return '<div class="doc"><h4>Republic of Utopia · Passport</h4><div class="photo">PHOTO<br>(sample)</div>' +
+      '<dl><dt>Surname</dt><dd>EXAMPLE</dd><dt>Given names</dt><dd>ALEX</dd><dt>Nationality</dt><dd>UTOPIAN</dd>' +
+      '<dt>Date of birth</dt><dd>15 JUN 2003</dd><dt>Passport no.</dt><dd>X00000000</dd><dt>Date of expiry</dt><dd>01 JAN 2031</dd></dl>' +
+      '<div class="mrz">P&lt;UTOEXAMPLE&lt;&lt;ALEX&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>' +
+      'X000000001UTO0306159X3101012&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;08</div></div>';
+  },
+  d2: function () {
+    return '<div class="doc"><h4>Beispiel-Universität · Studienbescheinigung</h4><p class="sub">Sample university, not a real institution</p>' +
+      '<dl><dt>Name</dt><dd>Alex Example</dd><dt>Matrikelnr.</dt><dd>000000</dd><dt>Studiengang</dt><dd>Mathematik (M.Sc.)</dd>' +
+      '<dt>Semester</dt><dd>Wintersemester 2026/27</dd><dt>Status</dt><dd>Eingeschrieben</dd><dt>Gültig</dt><dd>01.10.2026 bis 31.03.2027</dd><dt>Ausgestellt</dt><dd>05.10.2026</dd></dl>' +
+      '<div class="rule"></div><p class="sub" style="margin:0">Dieses Dokument wurde maschinell erstellt und ist ohne Unterschrift gültig. (Beispieltext)</p></div>';
+  },
+  d3: function () {
+    return '<div class="doc"><h4>Beispielbank · Sperrkonto-Auszug</h4><p class="sub">Sample bank, not a real institution</p>' +
+      '<dl><dt>Kontoinhaber</dt><dd>Alex Example</dd><dt>Kontoart</dt><dd>Sperrkonto</dd><dt>Stichtag</dt><dd>10.10.2026</dd></dl>' +
+      '<div class="rule"></div><table><tr><td>Anfangssaldo</td><td>12.000,00 EUR</td></tr><tr><td>Zahlungen</td><td>0,00 EUR</td></tr><tr><td>Schlusssaldo</td><td>12.000,00 EUR</td></tr></table></div>';
+  },
+  d4: function () {
+    return '<div class="doc"><h4>Beispiel-Amtsgericht · Grundbuchauszug</h4><p class="sub">Sample court, not a real institution</p>' +
+      '<dl><dt>Objekt</dt><dd>Beispielstraße 1, Münster</dd><dt>Abteilung I</dt><dd>Eigentümer: Sam Sample</dd><dt>Auszug vom</dt><dd>20.09.2026</dd></dl>' +
+      '<div class="rule"></div><p class="sub" style="margin:0">Dies ist ein erfundenes Beispiel zur Veranschaulichung. (Beispieltext)</p></div>';
+  }
+};
+var TOKENS = { d1: 'EX-IDENTITY-A1B2C3D4E5', d2: 'EX-ENROLMENT-F6A7B8C9D0', d3: 'EX-FINANCE-1A2B3C4D5E', d4: 'EX-PROPERTY-6F7A8B9C0D' };
+
+function docCard(key, capKey, resKey) {
+  var s = t();
+  var done = state.checked[key], busy = state.busy[key];
+  var h = '<div class="dcard">' + DOCS[key]() + '<p class="cap">' + s[capKey] + '</p>';
+  if (done) {
+    h += '<div class="dres"><span class="tag">' + CHECK + s.verified + '</span><ul>' + s[resKey].map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>' +
+         '<div class="tok">' + s.dTokenLabel + ': ' + TOKENS[key] + '</div><p class="small">' + s.dDeleted + '</p></div>';
+  } else {
+    h += '<button type="button" class="btn ghost" data-check="' + key + '"' + (busy ? ' disabled' : '') + '>' + (busy ? s.dChecking : s.dCheck) + '</button>';
+  }
+  return h + '</div>';
+}
+
+function render() {
+  var s = t();
+  document.documentElement.lang = state.lang;
+  document.getElementById('banner').textContent = s.banner;
+  document.getElementById('foot').textContent = s.foot;
+  document.getElementById('lang-en').setAttribute('aria-pressed', state.lang === 'en');
+  document.getElementById('lang-de').setAttribute('aria-pressed', state.lang === 'de');
+
+  var stepsEl = document.getElementById('steps');
+  stepsEl.innerHTML = s.steps.map(function (label, i) {
+    return '<li><button type="button" data-go="' + i + '"' + (i === state.screen ? ' aria-current="step"' : '') + '>' + (i + 1) + '. ' + label + '</button></li>';
+  }).join('');
+
+  var h = '';
+  if (state.screen === 0) {
+    h = '<h1>' + s.wTitle + '</h1><p class="muted">' + s.wText + '</p>' +
+        '<div class="row"><button type="button" class="btn" data-go="1">' + s.wTenant + '</button>' +
+        '<button type="button" class="btn ghost" data-go="4">' + s.wLandlord + '</button></div>' +
+        '<div class="callout">' + s.wNote + '</div>';
+  } else if (state.screen === 1) {
+    h = '<h2>' + s.dTitle + '</h2><p class="muted">' + s.dText + '</p>' +
+        '<div class="grp">' + s.dTenant + '</div>' + docCard('d1', 'dc1', 'r1') + docCard('d2', 'dc2', 'r2') + docCard('d3', 'dc3', 'r3') +
+        '<div class="grp">' + s.dLandlord + '</div>' + docCard('d4', 'dc4', 'r4') +
+        '<div class="callout">' + s.dNote + '</div>' +
+        '<div class="row"><button type="button" class="btn" data-go="2">' + s.dContinue + '</button><button type="button" class="btn ghost" data-go="0">' + s.back + '</button></div>';
+  } else if (state.screen === 2) {
+    h = '<div class="who"><span class="name">' + s.pName + '</span><span class="muted">' + s.pSub + '</span></div><h2>' + s.pTitle + '</h2>' +
+        '<ul class="items">' + itemFor('id') + itemFor('mo');
+    if (state.flatsAdded) {
+      h += itemFor('fl');
+    } else {
+      h += '<li class="item"><div class="body"><h3>' + s.flT + '</h3><p class="detail">' + s.flDNo + '</p>' +
+           '<span class="tag pending">' + s.notAdded + '</span> <button type="button" class="btn ghost" data-act="addref" style="margin-top:8px">' + s.addRef + '</button></div></li>';
+    }
+    h += '</ul><div class="row"><button type="button" class="btn" data-go="3">' + s.pShare + '</button></div>';
+  } else if (state.screen === 3) {
+    h = '<h2>' + s.sTitle + '</h2><p class="muted">' + s.sText + '</p><p><strong>' + s.sTo + '</strong></p><ul class="items">' +
+        '<li class="item"><label><input type="checkbox" data-share="id"' + (state.share.id ? ' checked' : '') + '><span><strong>' + s.idT + '</strong><br><span class="detail muted">' + s.idD + '</span></span></label></li>' +
+        '<li class="item"><label><input type="checkbox" data-share="mo"' + (state.share.mo ? ' checked' : '') + '><span><strong>' + s.moT + '</strong><br><span class="detail muted">' + s.moD + '</span></span></label></li>' +
+        '<li class="item"><label><input type="checkbox" data-share="fl"' + (state.share.fl && state.flatsAdded ? ' checked' : '') + (state.flatsAdded ? '' : ' disabled') + '><span><strong>' + s.flT + '</strong><br><span class="detail muted">' + (state.flatsAdded ? s.flDYes : s.notAdded) + '</span></span></label></li>' +
+        '</ul><div class="row"><button type="button" class="btn" data-go="4">' + s.share + '</button><button type="button" class="btn ghost" data-go="2">' + s.back + '</button></div>';
+  } else if (state.screen === 4) {
+    var keys = sharedKeys();
+    h = '<div class="who"><span class="name">' + s.lTitle + '</span></div><p class="muted">' + s.lSub + '</p>' +
+        (keys.length ? '<ul class="items">' + keys.map(itemFor).join('') + '</ul>' : '<p>' + s.lNone + '</p>') +
+        '<div class="callout">' + s.lCallout + '</div>' +
+        '<div class="row"><button type="button" class="btn ghost" data-act="ask">' + s.more + '</button><button type="button" class="btn" data-go="5">' + s.toCheck + '</button></div>' +
+        '<div class="status" role="status">' + (state.asked ? s.moreDone : '') + '</div>';
+  } else {
+    h = '<h2>' + s.fTitle + '</h2><p class="muted">' + s.fSub + '</p><ul class="items">' +
+        item(s.f1T, s.f1D, tag(s.verified)) + item(s.f2T, s.f2D, tag(s.verified)) + item(s.f3T, s.f3D, tag(s.verified)) +
+        item(s.f4T, s.f4D, '<span class="tag pending">' + s.notAdded + '</span>') +
+        '</ul><div class="row"><button type="button" class="btn" data-go="0">' + s.toStart + '</button></div>';
+  }
+  document.getElementById('screen').innerHTML = h;
+}
+
+document.addEventListener('click', function (e) {
+  var el = e.target.closest('[data-go],[data-act],[data-check],#lang-en,#lang-de');
+  if (!el) return;
+  if (el.id === 'lang-en') { state.lang = 'en'; render(); return; }
+  if (el.id === 'lang-de') { state.lang = 'de'; render(); return; }
+  if (el.dataset.check) {
+    var k = el.dataset.check;
+    state.busy[k] = true; render();
+    setTimeout(function () { state.busy[k] = false; state.checked[k] = true; render(); }, 800);
+    return;
+  }
+  if (el.dataset.act === 'addref') { state.flatsAdded = true; render(); return; }
+  if (el.dataset.act === 'ask') { state.asked = true; render(); return; }
+  if (el.dataset.go !== undefined) {
+    state.screen = parseInt(el.dataset.go, 10);
+    state.asked = false;
+    render();
+    window.scrollTo(0, 0);
+  }
+});
+document.addEventListener('change', function (e) {
+  var k = e.target.getAttribute && e.target.getAttribute('data-share');
+  if (k) { state.share[k] = e.target.checked; }
+});
+render();
+</script>
+
+</body></html>
