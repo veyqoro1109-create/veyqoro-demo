@@ -134,15 +134,15 @@ var T = {
   en: {
     banner: 'Prototype with example data. No real people, documents or numbers.',
     foot: 'Example only. Evidence, not a guarantee.',
-    steps: ['Start', 'Documents', 'Tenant profile', 'Share', 'Landlord view', 'Flat check'],
-    dTitle: 'Your documents', dText: 'These are made-up sample documents, so you can see what is checked and what comes back. Press "Check this sample" on each one. Use no real documents in this demo.',
+    steps: ['Start', 'Tenant profile', 'Documents', 'Share', 'Landlord view', 'Flat check', 'Landlord check'],
+    dTitle: 'Your documents', dText: 'These are made-up sample documents, so you can see what is checked and what comes back. Press "Check this sample" on each one.',
     dTenant: 'Tenant documents', dLandlord: 'Landlord document', dCheck: 'Check this sample', dChecking: 'Checking…',
-    dDone: 'Result', dTokenLabel: 'Result code', dDeleted: 'The sample is not kept. Only this result is kept (example).', dContinue: 'Continue to the profile',
+    dDone: 'Result', dTokenLabel: 'Result code', dDeleted: 'The sample is not kept. Only this result is kept (example).', dContinue: 'Continue to sharing', dSee: 'See the sample documents',
     dc1: 'Passport page (fictional country, as the tenant would upload it)', dc2: 'Enrollment letter from a fictional university', dc3: 'Blocked account statement from a fictional bank', dc4: 'Land registry extract (Grundbuchauszug) for the landlord, as a sample',
     r1: ['Name and passport number read from the photo', 'Machine-readable lines are consistent (check digits match)', 'Valid until 2031, so long enough for the rental'],
     r2: ['Enrolled for winter semester 2026/27', 'Name matches the verified passport', 'Letter is recent enough'],
     r3: ['Balance meets the required amount (example)', 'Name matches the verified passport', 'Statement is recent enough'],
-    r4: ['Owner name matches the landlord\'s verified identity', 'Extract is recent enough'],
+    r4: ['Owner name matches the landlord\'s verified identity', 'No forced-sale note in the land registry (example)', 'Extract is recent enough'],
     dNote: 'A check reads the document and applies set rules. It is evidence, not a guarantee. Unclear cases go to a person.',
     wTitle: 'Show who you are. Rent with confidence.',
     wText: 'VEYQORO gives international tenants verified information that travels with them, and gives landlords a clearer basis for their decision.',
@@ -164,20 +164,29 @@ var T = {
     f2T: 'The landlord is who they say', f2D: 'Identity checked by [example provider].',
     f3T: 'The landlord may rent it out', f3D: 'Ownership or authority confirmed by [example source].',
     f4T: 'Registration', f4D: 'The landlord confirmation for the registration is provided at move-in (example).',
-    toStart: 'Back to start'
+    f5T: 'Listing status', f5D: 'Found elsewhere, for example on a portal or through a contact. The landlord confirms the flat is still available and who it is open to (example).', f5V: 'Confirmed by [example landlord]',
+    fNote: 'Found the flat somewhere else? You can still use VEYQORO. Your verified profile works on its own, and the landlord can check the flat and the listing status here.',
+    toStart: 'Back to start',
+    lcTitle: 'Landlord and flat check', lcText: 'Landlords are checked in the same way as tenants. These are made-up sample documents. Press "Check this sample" on each one, then see what the tenant sees.',
+    lcWhoT: 'How it works', lcWho: ['The landlord uploads an ID, proof of ownership or authority, and the listing details.', 'VEYQORO reads them and applies set rules. Unclear cases go to a person. Only the result is kept.', 'The tenant sees: the flat exists, the landlord is who they say, the landlord may rent it out, and whether the listing is still open.'],
+    lcGroup: 'Landlord and flat documents',
+    dc5: 'Landlord passport page (fictional country, as the landlord would upload it)', dc6: 'Listing details the landlord enters for the flat (example)',
+    r5: ['Name and passport number read from the photo', 'Machine-readable lines are consistent (check digits match)', 'Valid until 2031'],
+    r6: ['Address exists in an example property record', 'Address matches the land registry extract', 'Listing is linked to the verified owner'],
+    lcNote: 'Evidence, not a guarantee. If a landlord rents out for the owner, a signed authority is checked instead of ownership (example).', lcContinue: 'See what the tenant sees'
   },
   de: {
     banner: 'Prototyp mit Beispieldaten. Keine echten Personen, Dokumente oder Zahlen.',
     foot: 'Nur ein Beispiel. Nachweise, keine Garantie.',
-    steps: ['Start', 'Dokumente', 'Mieterprofil', 'Teilen', 'Ansicht Vermieter', 'Wohnungs-Check'],
-    dTitle: 'Deine Dokumente', dText: 'Das sind ausgedachte Beispieldokumente, damit du siehst, was geprüft wird und was zurückkommt. Tippe bei jedem auf "Dieses Beispiel prüfen". Nutze in dieser Demo keine echten Dokumente.',
+    steps: ['Start', 'Mieterprofil', 'Dokumente', 'Teilen', 'Ansicht Vermieter', 'Wohnungs-Check', 'Vermieter-Check'],
+    dTitle: 'Deine Dokumente', dText: 'Das sind ausgedachte Beispieldokumente, damit du siehst, was geprüft wird und was zurückkommt. Tippe bei jedem auf "Dieses Beispiel prüfen".',
     dTenant: 'Dokumente der Mieter', dLandlord: 'Dokument des Vermieters', dCheck: 'Dieses Beispiel prüfen', dChecking: 'Prüfung läuft…',
-    dDone: 'Ergebnis', dTokenLabel: 'Ergebniscode', dDeleted: 'Das Beispiel wird nicht aufbewahrt. Nur dieses Ergebnis bleibt (Beispiel).', dContinue: 'Weiter zum Profil',
+    dDone: 'Ergebnis', dTokenLabel: 'Ergebniscode', dDeleted: 'Das Beispiel wird nicht aufbewahrt. Nur dieses Ergebnis bleibt (Beispiel).', dContinue: 'Weiter zum Teilen', dSee: 'Beispieldokumente ansehen',
     dc1: 'Reisepassseite (erfundenes Land, so wie ein Mieter sie hochlädt)', dc2: 'Immatrikulationsbescheinigung einer erfundenen Universität', dc3: 'Sperrkonto-Auszug einer erfundenen Bank', dc4: 'Grundbuchauszug für den Vermieter, als Beispiel',
     r1: ['Name und Passnummer vom Foto gelesen', 'Maschinenlesbare Zeilen stimmen überein (Prüfziffern passen)', 'Gültig bis 2031, also lang genug für die Miete'],
     r2: ['Im Wintersemester 2026/27 eingeschrieben', 'Name passt zum geprüften Reisepass', 'Bescheinigung ist aktuell genug'],
     r3: ['Guthaben erreicht den verlangten Betrag (Beispiel)', 'Name passt zum geprüften Reisepass', 'Auszug ist aktuell genug'],
-    r4: ['Eigentümername passt zur geprüften Identität des Vermieters', 'Auszug ist aktuell genug'],
+    r4: ['Eigentümername passt zur geprüften Identität des Vermieters', 'Kein Zwangsversteigerungsvermerk im Grundbuch (Beispiel)', 'Auszug ist aktuell genug'],
     dNote: 'Eine Prüfung liest das Dokument und wendet feste Regeln an. Sie ist ein Nachweis, keine Garantie. Unklare Fälle prüft eine Person.',
     wTitle: 'Zeige, wer du bist. Mit Vertrauen mieten.',
     wText: 'VEYQORO gibt internationalen Mietern geprüfte Angaben, die mit ihnen reisen, und gibt Vermietern eine klarere Grundlage für ihre Entscheidung.',
@@ -199,11 +208,20 @@ var T = {
     f2T: 'Der Vermieter ist, wer er sagt', f2D: 'Identität geprüft von [Beispielanbieter].',
     f3T: 'Der Vermieter darf vermieten', f3D: 'Eigentum oder Vollmacht bestätigt von [Beispielquelle].',
     f4T: 'Anmeldung', f4D: 'Die Wohnungsgeberbestätigung für die Anmeldung wird beim Einzug bereitgestellt (Beispiel).',
-    toStart: 'Zurück zum Start'
+    f5T: 'Status des Inserats', f5D: 'Anderswo gefunden, zum Beispiel auf einem Portal oder über einen Kontakt. Der Vermieter bestätigt, dass die Wohnung noch verfügbar ist und für wen sie offen ist (Beispiel).', f5V: 'Bestätigt von [Beispiel-Vermieter]',
+    fNote: 'Wohnung woanders gefunden? Du kannst VEYQORO trotzdem nutzen. Dein geprüftes Profil funktioniert auch allein, und der Vermieter kann hier die Wohnung und den Status des Inserats prüfen.',
+    toStart: 'Zurück zum Start',
+    lcTitle: 'Vermieter- und Wohnungs-Check', lcText: 'Vermieter werden genauso geprüft wie Mieter. Das sind ausgedachte Beispieldokumente. Tippe bei jedem auf "Dieses Beispiel prüfen" und sieh dann, was der Mieter sieht.',
+    lcWhoT: 'So funktioniert es', lcWho: ['Der Vermieter lädt einen Ausweis, einen Eigentums- oder Vollmachtsnachweis und die Angaben zum Inserat hoch.', 'VEYQORO liest sie und wendet feste Regeln an. Unklare Fälle prüft eine Person. Nur das Ergebnis bleibt.', 'Der Mieter sieht: die Wohnung existiert, der Vermieter ist, wer er sagt, der Vermieter darf vermieten, und ob das Inserat noch offen ist.'],
+    lcGroup: 'Dokumente zu Vermieter und Wohnung',
+    dc5: 'Reisepassseite des Vermieters (erfundenes Land, so wie ein Vermieter sie hochlädt)', dc6: 'Angaben zum Inserat, die der Vermieter für die Wohnung eingibt (Beispiel)',
+    r5: ['Name und Passnummer vom Foto gelesen', 'Maschinenlesbare Zeilen stimmen überein (Prüfziffern passen)', 'Gültig bis 2031'],
+    r6: ['Adresse existiert in einem Beispiel-Objektregister', 'Adresse passt zum Grundbuchauszug', 'Inserat ist mit dem geprüften Eigentümer verknüpft'],
+    lcNote: 'Nachweise, keine Garantie. Vermietet jemand für den Eigentümer, wird statt des Eigentums eine unterschriebene Vollmacht geprüft (Beispiel).', lcContinue: 'Sehen, was der Mieter sieht'
   }
 };
 var CHECK = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l3 3 5-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-var state = { lang: 'en', screen: 0, flatsAdded: false, share: { id: true, mo: true, fl: true }, asked: false, checked: {}, busy: {} };
+var state = { lang: 'en', role: null, screen: 0, flatsAdded: false, share: { id: true, mo: true, fl: true }, asked: false, checked: {}, busy: {} };
 
 function t() { return T[state.lang]; }
 function tag(text) { return '<span class="tag">' + CHECK + text + '</span>'; }
@@ -250,7 +268,20 @@ var DOCS = {
       '<div class="rule"></div><p class="sub" style="margin:0">Dies ist ein erfundenes Beispiel zur Veranschaulichung. (Beispieltext)</p></div>';
   }
 };
-var TOKENS = { d1: 'EX-IDENTITY-A1B2C3D4E5', d2: 'EX-ENROLMENT-F6A7B8C9D0', d3: 'EX-FINANCE-1A2B3C4D5E', d4: 'EX-PROPERTY-6F7A8B9C0D' };
+DOCS.d5 = function () {
+  return '<div class="doc"><h4>Republic of Utopia · Passport</h4><div class="photo">PHOTO<br>(sample)</div>' +
+    '<dl><dt>Surname</dt><dd>SAMPLE</dd><dt>Given names</dt><dd>SAM</dd><dt>Nationality</dt><dd>UTOPIAN</dd>' +
+    '<dt>Date of birth</dt><dd>01 JAN 1978</dd><dt>Passport no.</dt><dd>X00000002</dd><dt>Date of expiry</dt><dd>01 JAN 2031</dd></dl>' +
+    '<div class="mrz">P&lt;UTOSAMPLE&lt;&lt;SAM&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>' +
+    'X000000021UTO7801018X3101012&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;04</div></div>';
+};
+DOCS.d6 = function () {
+  return '<div class="doc"><h4>Beispiel-Inserat · Wohnung</h4><p class="sub">Sample listing, not a real offer</p>' +
+    '<dl><dt>Adresse</dt><dd>Beispielstraße 1, Münster</dd><dt>Zimmer</dt><dd>2</dd><dt>Verfügbar ab</dt><dd>01.04.2027</dd>' +
+    '<dt>Anbieter</dt><dd>Sam Sample</dd></dl>' +
+    '<div class="rule"></div><p class="sub" style="margin:0">Dies ist ein erfundenes Beispiel zur Veranschaulichung. (Beispieltext)</p></div>';
+};
+var TOKENS = { d1: 'EX-IDENTITY-A1B2C3D4E5', d2: 'EX-ENROLMENT-F6A7B8C9D0', d3: 'EX-FINANCE-1A2B3C4D5E', d4: 'EX-PROPERTY-6F7A8B9C0D', d5: 'EX-LANDLORD-ID-7C8D9E0F1A', d6: 'EX-LISTING-2B3C4D5E6F' };
 
 function docCard(key, capKey, resKey) {
   var s = t();
@@ -274,23 +305,25 @@ function render() {
   document.getElementById('lang-de').setAttribute('aria-pressed', state.lang === 'de');
 
   var stepsEl = document.getElementById('steps');
-  stepsEl.innerHTML = s.steps.map(function (label, i) {
-    return '<li><button type="button" data-go="' + i + '"' + (i === state.screen ? ' aria-current="step"' : '') + '>' + (i + 1) + '. ' + label + '</button></li>';
+  var order = state.role === 'tenant' ? [0, 1, 2, 3, 5] : state.role === 'landlord' ? [0, 4, 6, 5] : [];
+  stepsEl.style.display = order.length ? '' : 'none';
+  stepsEl.innerHTML = order.map(function (i, n) { var label = s.steps[i];
+    return '<li><button type="button" data-go="' + i + '"' + (i === state.screen ? ' aria-current="step"' : '') + '>' + (n + 1) + '. ' + label + '</button></li>';
   }).join('');
 
   var h = '';
   if (state.screen === 0) {
     h = '<h1>' + s.wTitle + '</h1><p class="muted">' + s.wText + '</p>' +
-        '<div class="row"><button type="button" class="btn" data-go="1">' + s.wTenant + '</button>' +
-        '<button type="button" class="btn ghost" data-go="4">' + s.wLandlord + '</button></div>' +
+        '<div class="row"><button type="button" class="btn" data-role="tenant" data-go="1">' + s.wTenant + '</button>' +
+        '<button type="button" class="btn ghost" data-role="landlord" data-go="4">' + s.wLandlord + '</button></div>' +
         '<div class="callout">' + s.wNote + '</div>';
-  } else if (state.screen === 1) {
+  } else if (state.screen === 2) {
     h = '<h2>' + s.dTitle + '</h2><p class="muted">' + s.dText + '</p>' +
         '<div class="grp">' + s.dTenant + '</div>' + docCard('d1', 'dc1', 'r1') + docCard('d2', 'dc2', 'r2') + docCard('d3', 'dc3', 'r3') +
-        '<div class="grp">' + s.dLandlord + '</div>' + docCard('d4', 'dc4', 'r4') +
+        (state.role === 'tenant' ? '' : '<div class="grp">' + s.dLandlord + '</div>' + docCard('d4', 'dc4', 'r4')) +
         '<div class="callout">' + s.dNote + '</div>' +
-        '<div class="row"><button type="button" class="btn" data-go="2">' + s.dContinue + '</button><button type="button" class="btn ghost" data-go="0">' + s.back + '</button></div>';
-  } else if (state.screen === 2) {
+        '<div class="row"><button type="button" class="btn" data-go="3">' + s.dContinue + '</button><button type="button" class="btn ghost" data-go="1">' + s.back + '</button></div>';
+  } else if (state.screen === 1) {
     h = '<div class="who"><span class="name">' + s.pName + '</span><span class="muted">' + s.pSub + '</span></div><h2>' + s.pTitle + '</h2>' +
         '<ul class="items">' + itemFor('id') + itemFor('mo');
     if (state.flatsAdded) {
@@ -299,31 +332,38 @@ function render() {
       h += '<li class="item"><div class="body"><h3>' + s.flT + '</h3><p class="detail">' + s.flDNo + '</p>' +
            '<span class="tag pending">' + s.notAdded + '</span> <button type="button" class="btn ghost" data-act="addref" style="margin-top:8px">' + s.addRef + '</button></div></li>';
     }
-    h += '</ul><div class="row"><button type="button" class="btn" data-go="3">' + s.pShare + '</button></div>';
+    h += '</ul><div class="row"><button type="button" class="btn" data-go="3">' + s.pShare + '</button><button type="button" class="btn ghost" data-go="2">' + s.dSee + '</button></div>';
   } else if (state.screen === 3) {
     h = '<h2>' + s.sTitle + '</h2><p class="muted">' + s.sText + '</p><p><strong>' + s.sTo + '</strong></p><ul class="items">' +
         '<li class="item"><label><input type="checkbox" data-share="id"' + (state.share.id ? ' checked' : '') + '><span><strong>' + s.idT + '</strong><br><span class="detail muted">' + s.idD + '</span></span></label></li>' +
         '<li class="item"><label><input type="checkbox" data-share="mo"' + (state.share.mo ? ' checked' : '') + '><span><strong>' + s.moT + '</strong><br><span class="detail muted">' + s.moD + '</span></span></label></li>' +
         '<li class="item"><label><input type="checkbox" data-share="fl"' + (state.share.fl && state.flatsAdded ? ' checked' : '') + (state.flatsAdded ? '' : ' disabled') + '><span><strong>' + s.flT + '</strong><br><span class="detail muted">' + (state.flatsAdded ? s.flDYes : s.notAdded) + '</span></span></label></li>' +
-        '</ul><div class="row"><button type="button" class="btn" data-go="4">' + s.share + '</button><button type="button" class="btn ghost" data-go="2">' + s.back + '</button></div>';
+        '</ul><div class="row"><button type="button" class="btn" data-go="' + (state.role === 'tenant' ? 5 : 4) + '">' + s.share + '</button><button type="button" class="btn ghost" data-go="1">' + s.back + '</button></div>';
+  } else if (state.screen === 6) {
+    h = '<h2>' + s.lcTitle + '</h2><p class="muted">' + s.lcText + '</p>' +
+        '<div class="callout"><strong>' + s.lcWhoT + '</strong><ul style="margin:6px 0 0;padding-left:18px">' + s.lcWho.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul></div>' +
+        '<div class="grp">' + s.lcGroup + '</div>' + docCard('d5', 'dc5', 'r5') + docCard('d4', 'dc4', 'r4') + docCard('d6', 'dc6', 'r6') +
+        '<div class="callout">' + s.lcNote + '</div>' +
+        '<div class="row"><button type="button" class="btn" data-go="5">' + s.lcContinue + '</button><button type="button" class="btn ghost" data-go="0">' + s.toStart + '</button></div>';
   } else if (state.screen === 4) {
     var keys = sharedKeys();
     h = '<div class="who"><span class="name">' + s.lTitle + '</span></div><p class="muted">' + s.lSub + '</p>' +
         (keys.length ? '<ul class="items">' + keys.map(itemFor).join('') + '</ul>' : '<p>' + s.lNone + '</p>') +
         '<div class="callout">' + s.lCallout + '</div>' +
-        '<div class="row"><button type="button" class="btn ghost" data-act="ask">' + s.more + '</button><button type="button" class="btn" data-go="5">' + s.toCheck + '</button></div>' +
+        '<div class="row"><button type="button" class="btn ghost" data-act="ask">' + s.more + '</button><button type="button" class="btn" data-go="6">' + s.toCheck + '</button></div>' +
         '<div class="status" role="status">' + (state.asked ? s.moreDone : '') + '</div>';
   } else {
     h = '<h2>' + s.fTitle + '</h2><p class="muted">' + s.fSub + '</p><ul class="items">' +
         item(s.f1T, s.f1D, tag(s.verified)) + item(s.f2T, s.f2D, tag(s.verified)) + item(s.f3T, s.f3D, tag(s.verified)) +
-        item(s.f4T, s.f4D, '<span class="tag pending">' + s.notAdded + '</span>') +
-        '</ul><div class="row"><button type="button" class="btn" data-go="0">' + s.toStart + '</button></div>';
+        item(s.f4T, s.f4D, '<span class="tag pending">' + s.notAdded + '</span>') + item(s.f5T, s.f5D, tag(s.f5V)) +
+        '</ul><div class="callout">' + s.fNote + '</div><div class="row"><button type="button" class="btn" data-go="0">' + s.toStart + '</button></div>';
   }
   document.getElementById('screen').innerHTML = h;
 }
 
 document.addEventListener('click', function (e) {
   var el = e.target.closest('[data-go],[data-act],[data-check],#lang-en,#lang-de');
+  if (el && el.dataset.go === '1' && state.role === null && !el.dataset.role) { state.role = 'tenant'; }
   if (!el) return;
   if (el.id === 'lang-en') { state.lang = 'en'; render(); return; }
   if (el.id === 'lang-de') { state.lang = 'de'; render(); return; }
@@ -337,6 +377,8 @@ document.addEventListener('click', function (e) {
   if (el.dataset.act === 'ask') { state.asked = true; render(); return; }
   if (el.dataset.go !== undefined) {
     state.screen = parseInt(el.dataset.go, 10);
+    if (el.dataset.role) { state.role = el.dataset.role; }
+    if (state.screen === 0) { state.role = null; }
     state.asked = false;
     render();
     window.scrollTo(0, 0);
