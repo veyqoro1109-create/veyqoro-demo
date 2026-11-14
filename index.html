@@ -138,7 +138,7 @@ var T = {
     foot: 'Example only. Evidence, not a guarantee.',
     steps: ['Start', 'Tenant profile', 'Documents', 'Share', 'Landlord view', 'Flat check', 'Landlord check'],
     dHint: 'Check all three samples to continue.', dContinueProfile: 'Continue to your profile', lMine: 'This is what the landlord receives. Nothing else.',
-    dUse: 'Upload sample documents', dUsing: 'Uploading and checking…', dNotUp: 'Not uploaded yet', dTextLite: 'Upload your documents once. They are checked with set rules. Here you can use made-up samples.', dHide: 'Hide sample documents', dSumId: 'Passport', dLId: 'Landlord ID', dLOwn: 'Proof of ownership', dLList: 'Listing details', dLText: 'Landlords are checked in the same way as tenants. Upload your documents once. Here you can use made-up samples.', lSeeTenant: 'See the tenant profile you receive', dSumEnrol: 'Enrolment letter', dSumMoney: 'Blocked account', dSumOk: 'Checked. Only the result is kept (example).',
+    dNudge: 'Please upload the sample documents first. Then you can continue.', dUse: 'Upload sample documents', dUsing: 'Uploading and checking…', dNotUp: 'Not uploaded yet', dTextLite: 'Upload your documents once. They are checked with set rules. Here you can use made-up samples.', dHide: 'Hide sample documents', dSumId: 'Passport', dLId: 'Landlord ID', dLOwn: 'Proof of ownership', dLList: 'Listing details', dLText: 'Landlords are checked in the same way as tenants. Upload your documents once. Here you can use made-up samples.', lSeeTenant: 'See the tenant profile you receive', dSumEnrol: 'Enrolment letter', dSumMoney: 'Blocked account', dSumOk: 'Checked. Only the result is kept (example).',
     dTitle: 'Your documents', dText: 'These are made-up sample documents, so you can see what is checked and what comes back. Press "Check this sample" on each one.',
     dTenant: 'Tenant documents', dLandlord: 'Landlord document', dCheck: 'Check this sample', dChecking: 'Checking…',
     dDone: 'Result', dTokenLabel: 'Result code', dDeleted: 'The sample is not kept. Only this result is kept (example).', dContinue: 'Continue to sharing', dSee: 'See the sample documents',
@@ -184,7 +184,7 @@ var T = {
     foot: 'Nur ein Beispiel. Nachweise, keine Garantie.',
     steps: ['Start', 'Mieterprofil', 'Dokumente', 'Teilen', 'Ansicht Vermieter', 'Wohnungs-Check', 'Vermieter-Check'],
     dHint: 'Prüfe alle drei Beispiele, um fortzufahren.', dContinueProfile: 'Weiter zu deinem Profil', lMine: 'Das erhält der Vermieter. Sonst nichts.',
-    dUse: 'Beispieldokumente hochladen', dUsing: 'Hochladen und prüfen…', dNotUp: 'Noch nicht hochgeladen', dTextLite: 'Lade deine Dokumente einmal hoch. Sie werden nach festen Regeln geprüft. Hier kannst du ausgedachte Beispiele nutzen.', dHide: 'Beispieldokumente ausblenden', dSumId: 'Reisepass', dLId: 'Ausweis des Vermieters', dLOwn: 'Eigentumsnachweis', dLList: 'Angaben zum Inserat', dLText: 'Vermieter werden genauso geprüft wie Mieter. Lade deine Dokumente einmal hoch. Hier kannst du ausgedachte Beispiele nutzen.', lSeeTenant: 'Das Mieterprofil ansehen, das du erhältst', dSumEnrol: 'Immatrikulationsbescheinigung', dSumMoney: 'Sperrkonto', dSumOk: 'Geprüft. Nur das Ergebnis bleibt (Beispiel).',
+    dNudge: 'Bitte lade zuerst die Beispieldokumente hoch. Dann geht es weiter.', dUse: 'Beispieldokumente hochladen', dUsing: 'Hochladen und prüfen…', dNotUp: 'Noch nicht hochgeladen', dTextLite: 'Lade deine Dokumente einmal hoch. Sie werden nach festen Regeln geprüft. Hier kannst du ausgedachte Beispiele nutzen.', dHide: 'Beispieldokumente ausblenden', dSumId: 'Reisepass', dLId: 'Ausweis des Vermieters', dLOwn: 'Eigentumsnachweis', dLList: 'Angaben zum Inserat', dLText: 'Vermieter werden genauso geprüft wie Mieter. Lade deine Dokumente einmal hoch. Hier kannst du ausgedachte Beispiele nutzen.', lSeeTenant: 'Das Mieterprofil ansehen, das du erhältst', dSumEnrol: 'Immatrikulationsbescheinigung', dSumMoney: 'Sperrkonto', dSumOk: 'Geprüft. Nur das Ergebnis bleibt (Beispiel).',
     dTitle: 'Deine Dokumente', dText: 'Das sind ausgedachte Beispieldokumente, damit du siehst, was geprüft wird und was zurückkommt. Tippe bei jedem auf "Dieses Beispiel prüfen".',
     dTenant: 'Dokumente der Mieter', dLandlord: 'Dokument des Vermieters', dCheck: 'Dieses Beispiel prüfen', dChecking: 'Prüfung läuft…',
     dDone: 'Ergebnis', dTokenLabel: 'Ergebniscode', dDeleted: 'Das Beispiel wird nicht aufbewahrt. Nur dieses Ergebnis bleibt (Beispiel).', dContinue: 'Weiter zum Teilen', dSee: 'Beispieldokumente ansehen',
@@ -227,7 +227,7 @@ var T = {
   }
 };
 var CHECK = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l3 3 5-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-var state = { lang: 'en', role: null, screen: 0, flatsAdded: false, share: { id: true, mo: true, fl: true }, asked: false, checked: {}, busy: {}, showDocs: false };
+var state = { lang: 'en', role: null, screen: 0, flatsAdded: false, share: { id: true, mo: true, fl: true }, asked: false, checked: {}, busy: {}, showDocs: false, nudge: false };
 
 function t() { return T[state.lang]; }
 function ldDone() { return !!(state.checked.d4 && state.checked.d5 && state.checked.d6); }
@@ -310,6 +310,7 @@ function liteDocs(s) {
   var done = ld ? ldDone() : docsDone();
   var busy = keys.some(function (k) { return state.busy[k]; });
   var h = '<h2>' + (ld ? s.lcTitle : s.dTitle) + '</h2><p class="muted">' + (ld ? s.dLText : s.dTextLite) + '</p>';
+  if (state.nudge && !done) { h += '<div class="callout">' + s.dNudge + '</div>'; }
   if (!done) {
     h += '<ul class="items">' + (ld ? [s.dLId, s.dLOwn, s.dLList] : [s.dSumId, s.dSumEnrol, s.dSumMoney]).map(function (n) { return item(n, '', '<span class="tag pending">' + s.dNotUp + '</span>'); }).join('') + '</ul>';
     h += '<div class="row"><button type="button" class="btn" data-act="checkall" data-keys="' + keys.join(',') + '"' + (busy ? ' disabled' : '') + '>' + (busy ? s.dUsing : s.dUse) + '</button></div>';
@@ -373,7 +374,7 @@ function render() {
         '<div class="callout"><strong>' + s.lcWhoT + '</strong><ul style="margin:6px 0 0;padding-left:18px">' + s.lcWho.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul></div>' +
         '<div class="grp">' + s.lcGroup + '</div>' + docCard('d5', 'dc5', 'r5') + docCard('d4', 'dc4', 'r4') + docCard('d6', 'dc6', 'r6') +
         '<div class="callout">' + s.lcNote + '</div>' +
-        '<div class="row"><button type="button" class="btn" data-go="5">' + s.lcContinue + '</button><button type="button" class="btn ghost" data-go="0">' + s.toStart + '</button></div>';
+        '<div class="row"><button type="button" class="btn" data-go="5"' + (ldDone() ? '' : ' disabled') + '>' + s.lcContinue + '</button><button type="button" class="btn ghost" data-go="0">' + s.toStart + '</button></div>';
   } else if (state.screen === 4) {
     var keys = sharedKeys();
     h = '<div class="who"><span class="name">' + s.lTitle + '</span></div><p class="muted">' + s.lSub + '</p>' + (state.role === 'tenant' ? '<div class="callout">' + s.lMine + '</div>' : '') +
@@ -421,8 +422,9 @@ document.addEventListener('click', function (e) {
   if (el.dataset.go !== undefined) {
     state.screen = parseInt(el.dataset.go, 10);
     if (el.dataset.role) { state.role = el.dataset.role; }
-    if (state.role === 'tenant' && !docsDone() && (state.screen === 1 || state.screen === 3 || state.screen === 4)) { state.screen = 2; }
-    if (state.role === 'landlord' && !ldDone() && (state.screen === 5 || state.screen === 4)) { state.screen = 6; }
+    state.nudge = false;
+    if (state.role === 'tenant' && !docsDone() && (state.screen === 1 || state.screen === 3 || state.screen === 4 || state.screen === 5)) { state.screen = 2; state.nudge = true; }
+    if (state.role === 'landlord' && !ldDone() && (state.screen === 5 || state.screen === 4)) { state.screen = 6; state.nudge = true; }
     if (state.screen === 0) { state.role = null; }
     state.asked = false;
     render();
