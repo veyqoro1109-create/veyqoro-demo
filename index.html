@@ -138,7 +138,7 @@ var T = {
     foot: 'Example only. Evidence, not a guarantee.',
     steps: ['Start', 'Tenant profile', 'Documents', 'Share', 'Landlord view', 'Flat check', 'Landlord check'],
     dHint: 'Check all three samples to continue.', dContinueProfile: 'Continue to your profile', lMine: 'This is what the landlord receives. Nothing else.',
-    dUse: 'Upload sample documents', dUsing: 'Uploading and checking…', dNotUp: 'Not uploaded yet', dTextLite: 'Upload your documents once. They are checked with set rules. Here you can use made-up samples.', dHide: 'Hide sample documents', dSumId: 'Passport', dSumEnrol: 'Enrolment letter', dSumMoney: 'Blocked account', dSumOk: 'Checked. Only the result is kept (example).',
+    dUse: 'Upload sample documents', dUsing: 'Uploading and checking…', dNotUp: 'Not uploaded yet', dTextLite: 'Upload your documents once. They are checked with set rules. Here you can use made-up samples.', dHide: 'Hide sample documents', dSumId: 'Passport', dLId: 'Landlord ID', dLOwn: 'Proof of ownership', dLList: 'Listing details', dLText: 'Landlords are checked in the same way as tenants. Upload your documents once. Here you can use made-up samples.', lSeeTenant: 'See the tenant profile you receive', dSumEnrol: 'Enrolment letter', dSumMoney: 'Blocked account', dSumOk: 'Checked. Only the result is kept (example).',
     dTitle: 'Your documents', dText: 'These are made-up sample documents, so you can see what is checked and what comes back. Press "Check this sample" on each one.',
     dTenant: 'Tenant documents', dLandlord: 'Landlord document', dCheck: 'Check this sample', dChecking: 'Checking…',
     dDone: 'Result', dTokenLabel: 'Result code', dDeleted: 'The sample is not kept. Only this result is kept (example).', dContinue: 'Continue to sharing', dSee: 'See the sample documents',
@@ -184,7 +184,7 @@ var T = {
     foot: 'Nur ein Beispiel. Nachweise, keine Garantie.',
     steps: ['Start', 'Mieterprofil', 'Dokumente', 'Teilen', 'Ansicht Vermieter', 'Wohnungs-Check', 'Vermieter-Check'],
     dHint: 'Prüfe alle drei Beispiele, um fortzufahren.', dContinueProfile: 'Weiter zu deinem Profil', lMine: 'Das erhält der Vermieter. Sonst nichts.',
-    dUse: 'Beispieldokumente hochladen', dUsing: 'Hochladen und prüfen…', dNotUp: 'Noch nicht hochgeladen', dTextLite: 'Lade deine Dokumente einmal hoch. Sie werden nach festen Regeln geprüft. Hier kannst du ausgedachte Beispiele nutzen.', dHide: 'Beispieldokumente ausblenden', dSumId: 'Reisepass', dSumEnrol: 'Immatrikulationsbescheinigung', dSumMoney: 'Sperrkonto', dSumOk: 'Geprüft. Nur das Ergebnis bleibt (Beispiel).',
+    dUse: 'Beispieldokumente hochladen', dUsing: 'Hochladen und prüfen…', dNotUp: 'Noch nicht hochgeladen', dTextLite: 'Lade deine Dokumente einmal hoch. Sie werden nach festen Regeln geprüft. Hier kannst du ausgedachte Beispiele nutzen.', dHide: 'Beispieldokumente ausblenden', dSumId: 'Reisepass', dLId: 'Ausweis des Vermieters', dLOwn: 'Eigentumsnachweis', dLList: 'Angaben zum Inserat', dLText: 'Vermieter werden genauso geprüft wie Mieter. Lade deine Dokumente einmal hoch. Hier kannst du ausgedachte Beispiele nutzen.', lSeeTenant: 'Das Mieterprofil ansehen, das du erhältst', dSumEnrol: 'Immatrikulationsbescheinigung', dSumMoney: 'Sperrkonto', dSumOk: 'Geprüft. Nur das Ergebnis bleibt (Beispiel).',
     dTitle: 'Deine Dokumente', dText: 'Das sind ausgedachte Beispieldokumente, damit du siehst, was geprüft wird und was zurückkommt. Tippe bei jedem auf "Dieses Beispiel prüfen".',
     dTenant: 'Dokumente der Mieter', dLandlord: 'Dokument des Vermieters', dCheck: 'Dieses Beispiel prüfen', dChecking: 'Prüfung läuft…',
     dDone: 'Ergebnis', dTokenLabel: 'Ergebniscode', dDeleted: 'Das Beispiel wird nicht aufbewahrt. Nur dieses Ergebnis bleibt (Beispiel).', dContinue: 'Weiter zum Teilen', dSee: 'Beispieldokumente ansehen',
@@ -230,6 +230,7 @@ var CHECK = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l3 3 5-6
 var state = { lang: 'en', role: null, screen: 0, flatsAdded: false, share: { id: true, mo: true, fl: true }, asked: false, checked: {}, busy: {}, showDocs: false };
 
 function t() { return T[state.lang]; }
+function ldDone() { return !!(state.checked.d4 && state.checked.d5 && state.checked.d6); }
 function docsDone() { return !!(state.checked.d1 && state.checked.d2 && state.checked.d3); }
 function tag(text) { return '<span class="tag">' + CHECK + text + '</span>'; }
 function item(title, detail, tagHtml) {
@@ -304,14 +305,18 @@ function docCard(key, capKey, resKey) {
 }
 
 function liteDocs(s) {
-  var busy = !!(state.busy.d1 || state.busy.d2 || state.busy.d3);
-  var h = '<h2>' + s.dTitle + '</h2><p class="muted">' + s.dTextLite + '</p>';
-  if (!docsDone()) {
-    h += '<ul class="items">' + [s.dSumId, s.dSumEnrol, s.dSumMoney].map(function (n) { return item(n, '', '<span class="tag pending">' + s.dNotUp + '</span>'); }).join('') + '</ul>';
-    h += '<div class="row"><button type="button" class="btn" data-act="checkall"' + (busy ? ' disabled' : '') + '>' + (busy ? s.dUsing : s.dUse) + '</button></div>';
+  var ld = state.role === 'landlord';
+  var keys = ld ? ['d5', 'd4', 'd6'] : ['d1', 'd2', 'd3'];
+  var done = ld ? ldDone() : docsDone();
+  var busy = keys.some(function (k) { return state.busy[k]; });
+  var h = '<h2>' + (ld ? s.lcTitle : s.dTitle) + '</h2><p class="muted">' + (ld ? s.dLText : s.dTextLite) + '</p>';
+  if (!done) {
+    h += '<ul class="items">' + (ld ? [s.dLId, s.dLOwn, s.dLList] : [s.dSumId, s.dSumEnrol, s.dSumMoney]).map(function (n) { return item(n, '', '<span class="tag pending">' + s.dNotUp + '</span>'); }).join('') + '</ul>';
+    h += '<div class="row"><button type="button" class="btn" data-act="checkall" data-keys="' + keys.join(',') + '"' + (busy ? ' disabled' : '') + '>' + (busy ? s.dUsing : s.dUse) + '</button></div>';
   } else {
-    h += '<ul class="items">' + item(s.dSumId, s.dSumOk, tag(s.verified)) + item(s.dSumEnrol, s.dSumOk, tag(s.verified)) + item(s.dSumMoney, s.dSumOk, tag(s.verified)) + '</ul>' +
-         '<div class="row"><button type="button" class="btn" data-go="1">' + s.dContinueProfile + '</button></div>';
+    var names = ld ? [s.dLId, s.dLOwn, s.dLList] : [s.dSumId, s.dSumEnrol, s.dSumMoney];
+    h += '<ul class="items">' + names.map(function (n) { return item(n, s.dSumOk, tag(s.verified)); }).join('') + '</ul>' +
+         '<div class="row"><button type="button" class="btn" data-go="' + (ld ? 5 : 1) + '">' + (ld ? s.lcContinue : s.dContinueProfile) + '</button></div>';
   }
   h += '<div class="row"><button type="button" class="btn ghost" data-act="toggledocs">' + s.dSee + '</button><button type="button" class="btn ghost" data-go="0">' + s.back + '</button></div>' +
        '<div class="callout">' + s.dNote + '</div>';
@@ -327,7 +332,7 @@ function render() {
   document.getElementById('lang-de').setAttribute('aria-pressed', state.lang === 'de');
 
   var stepsEl = document.getElementById('steps');
-  var order = state.role === 'tenant' ? [0, 2, 1, 3, 4, 5] : state.role === 'landlord' ? [0, 4, 6, 5] : [];
+  var order = state.role === 'tenant' ? [0, 2, 1, 3, 4, 5] : state.role === 'landlord' ? [0, 6, 5, 4] : [];
   stepsEl.style.display = order.length ? '' : 'none';
   stepsEl.innerHTML = order.map(function (i, n) { var label = s.steps[i];
     return '<li><button type="button" data-go="' + i + '"' + (i === state.screen ? ' aria-current="step"' : '') + '>' + (n + 1) + '. ' + label + '</button></li>';
@@ -337,7 +342,7 @@ function render() {
   if (state.screen === 0) {
     h = '<h1>' + s.wTitle + '</h1><p class="muted">' + s.wText + '</p>' +
         '<div class="row"><button type="button" class="btn" data-role="tenant" data-go="2">' + s.wTenant + '</button>' +
-        '<button type="button" class="btn ghost" data-role="landlord" data-go="4">' + s.wLandlord + '</button></div>' +
+        '<button type="button" class="btn ghost" data-role="landlord" data-go="6">' + s.wLandlord + '</button></div>' +
         '<div class="callout">' + s.wNote + '</div>';
   } else if (state.screen === 2) {
     h = '<h2>' + s.dTitle + '</h2><p class="muted">' + s.dText + '</p>' +
@@ -376,15 +381,15 @@ function render() {
         '<div class="callout">' + s.lCallout + '</div>' +
         (state.role === 'tenant'
           ? '<div class="row"><button type="button" class="btn" data-go="5">' + s.toCheck + '</button><button type="button" class="btn ghost" data-go="3">' + s.back + '</button></div>'
-          : '<div class="row"><button type="button" class="btn ghost" data-act="ask">' + s.more + '</button><button type="button" class="btn" data-go="6">' + s.toCheck + '</button></div>') +
+          : '<div class="row"><button type="button" class="btn ghost" data-act="ask">' + s.more + '</button><button type="button" class="btn" data-go="0">' + s.toStart + '</button></div>') +
         '<div class="status" role="status">' + (state.asked ? s.moreDone : '') + '</div>';
   } else {
     h = '<h2>' + s.fTitle + '</h2><p class="muted">' + s.fSub + '</p><ul class="items">' +
         item(s.f1T, s.f1D, tag(s.verified)) + item(s.f2T, s.f2D, tag(s.verified)) + item(s.f3T, s.f3D, tag(s.verified)) +
         item(s.f4T, s.f4D, '<span class="tag pending">' + s.notAdded + '</span>') + item(s.f5T, s.f5D, tag(s.f5V)) +
-        '</ul><div class="callout">' + s.fNote + '</div><div class="row"><button type="button" class="btn" data-go="0">' + s.toStart + '</button></div>';
+        '</ul><div class="callout">' + s.fNote + '</div><div class="row">' + (state.role === 'landlord' ? '<button type="button" class="btn" data-go="4">' + s.lSeeTenant + '</button>' : '<button type="button" class="btn" data-go="0">' + s.toStart + '</button>') + '</div>';
   }
-  if (state.screen === 2 && state.role === 'tenant') {
+  if ((state.screen === 2 && state.role === 'tenant') || (state.screen === 6 && state.role === 'landlord')) {
     if (!state.showDocs) { h = liteDocs(s); }
     else { h += '<div class="row"><button type="button" class="btn ghost" data-act="toggledocs">' + s.dHide + '</button></div>'; }
   }
@@ -404,9 +409,10 @@ document.addEventListener('click', function (e) {
     return;
   }
   if (el.dataset.act === 'checkall') {
-    ['d1', 'd2', 'd3'].forEach(function (k) { state.busy[k] = true; });
+    var ks = (el.dataset.keys || 'd1,d2,d3').split(',');
+    ks.forEach(function (k) { state.busy[k] = true; });
     render();
-    setTimeout(function () { ['d1', 'd2', 'd3'].forEach(function (k) { state.busy[k] = false; state.checked[k] = true; }); render(); }, 900);
+    setTimeout(function () { ks.forEach(function (k) { state.busy[k] = false; state.checked[k] = true; }); render(); }, 900);
     return;
   }
   if (el.dataset.act === 'toggledocs') { state.showDocs = !state.showDocs; render(); return; }
@@ -416,6 +422,7 @@ document.addEventListener('click', function (e) {
     state.screen = parseInt(el.dataset.go, 10);
     if (el.dataset.role) { state.role = el.dataset.role; }
     if (state.role === 'tenant' && !docsDone() && (state.screen === 1 || state.screen === 3 || state.screen === 4)) { state.screen = 2; }
+    if (state.role === 'landlord' && !ldDone() && (state.screen === 5 || state.screen === 4)) { state.screen = 6; }
     if (state.screen === 0) { state.role = null; }
     state.asked = false;
     render();
