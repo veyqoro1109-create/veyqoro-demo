@@ -138,6 +138,7 @@ var T = {
     foot: 'Example only. Evidence, not a guarantee.',
     steps: ['Start', 'Tenant profile', 'Documents', 'Share', 'Landlord view', 'Flat check', 'Landlord check'],
     dHint: 'Check all three samples to continue.', dContinueProfile: 'Continue to your profile', lMine: 'This is what the landlord receives. Nothing else.',
+    dUse: 'Upload sample documents', dUsing: 'Uploading and checking…', dNotUp: 'Not uploaded yet', dTextLite: 'Upload your documents once. They are checked with set rules. Here you can use made-up samples.', dHide: 'Hide sample documents', dSumId: 'Passport', dSumEnrol: 'Enrolment letter', dSumMoney: 'Blocked account', dSumOk: 'Checked. Only the result is kept (example).',
     dTitle: 'Your documents', dText: 'These are made-up sample documents, so you can see what is checked and what comes back. Press "Check this sample" on each one.',
     dTenant: 'Tenant documents', dLandlord: 'Landlord document', dCheck: 'Check this sample', dChecking: 'Checking…',
     dDone: 'Result', dTokenLabel: 'Result code', dDeleted: 'The sample is not kept. Only this result is kept (example).', dContinue: 'Continue to sharing', dSee: 'See the sample documents',
@@ -183,6 +184,7 @@ var T = {
     foot: 'Nur ein Beispiel. Nachweise, keine Garantie.',
     steps: ['Start', 'Mieterprofil', 'Dokumente', 'Teilen', 'Ansicht Vermieter', 'Wohnungs-Check', 'Vermieter-Check'],
     dHint: 'Prüfe alle drei Beispiele, um fortzufahren.', dContinueProfile: 'Weiter zu deinem Profil', lMine: 'Das erhält der Vermieter. Sonst nichts.',
+    dUse: 'Beispieldokumente hochladen', dUsing: 'Hochladen und prüfen…', dNotUp: 'Noch nicht hochgeladen', dTextLite: 'Lade deine Dokumente einmal hoch. Sie werden nach festen Regeln geprüft. Hier kannst du ausgedachte Beispiele nutzen.', dHide: 'Beispieldokumente ausblenden', dSumId: 'Reisepass', dSumEnrol: 'Immatrikulationsbescheinigung', dSumMoney: 'Sperrkonto', dSumOk: 'Geprüft. Nur das Ergebnis bleibt (Beispiel).',
     dTitle: 'Deine Dokumente', dText: 'Das sind ausgedachte Beispieldokumente, damit du siehst, was geprüft wird und was zurückkommt. Tippe bei jedem auf "Dieses Beispiel prüfen".',
     dTenant: 'Dokumente der Mieter', dLandlord: 'Dokument des Vermieters', dCheck: 'Dieses Beispiel prüfen', dChecking: 'Prüfung läuft…',
     dDone: 'Ergebnis', dTokenLabel: 'Ergebniscode', dDeleted: 'Das Beispiel wird nicht aufbewahrt. Nur dieses Ergebnis bleibt (Beispiel).', dContinue: 'Weiter zum Teilen', dSee: 'Beispieldokumente ansehen',
@@ -225,7 +227,7 @@ var T = {
   }
 };
 var CHECK = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l3 3 5-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-var state = { lang: 'en', role: null, screen: 0, flatsAdded: false, share: { id: true, mo: true, fl: true }, asked: false, checked: {}, busy: {} };
+var state = { lang: 'en', role: null, screen: 0, flatsAdded: false, share: { id: true, mo: true, fl: true }, asked: false, checked: {}, busy: {}, showDocs: false };
 
 function t() { return T[state.lang]; }
 function docsDone() { return !!(state.checked.d1 && state.checked.d2 && state.checked.d3); }
@@ -301,6 +303,21 @@ function docCard(key, capKey, resKey) {
   return h + '</div>';
 }
 
+function liteDocs(s) {
+  var busy = !!(state.busy.d1 || state.busy.d2 || state.busy.d3);
+  var h = '<h2>' + s.dTitle + '</h2><p class="muted">' + s.dTextLite + '</p>';
+  if (!docsDone()) {
+    h += '<ul class="items">' + [s.dSumId, s.dSumEnrol, s.dSumMoney].map(function (n) { return item(n, '', '<span class="tag pending">' + s.dNotUp + '</span>'); }).join('') + '</ul>';
+    h += '<div class="row"><button type="button" class="btn" data-act="checkall"' + (busy ? ' disabled' : '') + '>' + (busy ? s.dUsing : s.dUse) + '</button></div>';
+  } else {
+    h += '<ul class="items">' + item(s.dSumId, s.dSumOk, tag(s.verified)) + item(s.dSumEnrol, s.dSumOk, tag(s.verified)) + item(s.dSumMoney, s.dSumOk, tag(s.verified)) + '</ul>' +
+         '<div class="row"><button type="button" class="btn" data-go="1">' + s.dContinueProfile + '</button></div>';
+  }
+  h += '<div class="row"><button type="button" class="btn ghost" data-act="toggledocs">' + s.dSee + '</button><button type="button" class="btn ghost" data-go="0">' + s.back + '</button></div>' +
+       '<div class="callout">' + s.dNote + '</div>';
+  return h;
+}
+
 function render() {
   var s = t();
   document.documentElement.lang = state.lang;
@@ -367,6 +384,10 @@ function render() {
         item(s.f4T, s.f4D, '<span class="tag pending">' + s.notAdded + '</span>') + item(s.f5T, s.f5D, tag(s.f5V)) +
         '</ul><div class="callout">' + s.fNote + '</div><div class="row"><button type="button" class="btn" data-go="0">' + s.toStart + '</button></div>';
   }
+  if (state.screen === 2 && state.role === 'tenant') {
+    if (!state.showDocs) { h = liteDocs(s); }
+    else { h += '<div class="row"><button type="button" class="btn ghost" data-act="toggledocs">' + s.dHide + '</button></div>'; }
+  }
   document.getElementById('screen').innerHTML = h;
 }
 
@@ -382,6 +403,13 @@ document.addEventListener('click', function (e) {
     setTimeout(function () { state.busy[k] = false; state.checked[k] = true; render(); }, 800);
     return;
   }
+  if (el.dataset.act === 'checkall') {
+    ['d1', 'd2', 'd3'].forEach(function (k) { state.busy[k] = true; });
+    render();
+    setTimeout(function () { ['d1', 'd2', 'd3'].forEach(function (k) { state.busy[k] = false; state.checked[k] = true; }); render(); }, 900);
+    return;
+  }
+  if (el.dataset.act === 'toggledocs') { state.showDocs = !state.showDocs; render(); return; }
   if (el.dataset.act === 'addref') { state.flatsAdded = true; render(); return; }
   if (el.dataset.act === 'ask') { state.asked = true; render(); return; }
   if (el.dataset.go !== undefined) {
